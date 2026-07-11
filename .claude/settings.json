@@ -1,0 +1,70 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/cbm-code-discovery-gate.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/cbm-session-reminder.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/cbm-session-reminder.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/cbm-session-reminder.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/cbm-session-reminder.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "sh ./.claude/statusline-command.sh"
+  },
+  "effortLevel": "xhigh",
+  "tui": "fullscreen",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "theme": "dark",
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true,
+  "enabledPlugins": {
+    "ponytail@ponytail": true
+  }
+}

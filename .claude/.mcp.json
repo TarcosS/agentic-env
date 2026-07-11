@@ -1,0 +1,51 @@
+{
+    "mcpServers": {
+        "github": {
+            "type": "http",
+            "url": "https://api.githubcopilot.com/mcp/"
+        },
+        "microsoft-learn": {
+            "type": "http",
+            "url": "https://learn.microsoft.com/api/mcp"
+        },
+        "codebase-memory-mcp": {
+            "command": "/Users/kklc/.local/bin/codebase-memory-mcp"
+        },
+        "playwright": {
+            "command": "npx",
+            "args": [
+                "@playwright/mcp@latest"
+            ]
+        },
+        "sequential-thinking": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ]
+        },
+        "azure": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@azure/mcp@latest"
+            ]
+        },
+        "mcp-guardian": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@mcp-guardian/server"
+            ]
+        },
+        "jamjet-policy": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@jamjet/mcp-shim",
+                "--serve-self",
+                "--policy", "/Users/kklc/.jamjet/policy.yaml"
+            ]
+        }
+    }
+}
