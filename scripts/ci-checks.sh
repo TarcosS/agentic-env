@@ -19,4 +19,9 @@ while IFS= read -r -d '' f; do
   python3 -m py_compile "$f" 2>/dev/null || { echo "py compile error: $f" >&2; fail=1; }
 done < <(find . -name '*.py' -not -path './.git/*' -print0)
 
+# Hook self-checks (each hook script supports --selfcheck)
+if [ -f ./.claude/hooks/test-hooks.sh ]; then
+  bash ./.claude/hooks/test-hooks.sh >&2 || fail=1
+fi
+
 exit $fail
