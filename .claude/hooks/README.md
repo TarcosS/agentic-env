@@ -12,7 +12,7 @@ supports a `--selfcheck` mode; `test-hooks.sh` runs them all and is called by
 | Script | Event | Matcher | Does |
 | :-- | :-- | :-- | :-- |
 | `cbm-code-discovery-gate.sh` | PreToolUse | `Grep\|Glob` | Nudge toward codebase-memory-mcp before raw text search |
-| `protect-files.sh` | PreToolUse | `Edit\|Write` | Block edits to `.env`, lockfiles, `.git/`, `settings.json` |
+| `protect-files.sh` | PreToolUse | `Edit\|Write` | Block edits to `.env`, lockfiles, `.git/` |
 | `pre-commit-gate.sh` | PreToolUse | `Bash` + `if: Bash(git commit *)` | Block a commit when `ci-checks.sh` is red |
 | `block-dangerous-bash.sh` | PreToolUse | `Bash` | Block `rm -rf /`, force-push to main, pipe-to-shell, etc. |
 | `validate-edit.sh` | PostToolUse | `Edit\|Write` | Validate the edited file (JSON/shell/Python), block on error |
@@ -23,19 +23,18 @@ supports a `--selfcheck` mode; `test-hooks.sh` runs them all and is called by
 | `subagent-audit.sh` | SubagentStart / SubagentStop | — | Append a JSONL record per subagent event |
 | `configchange-audit.sh` | ConfigChange | — | Log settings/skills changes (JSONL) |
 | `session-end.sh` | SessionEnd | — | Log session end + clean `/tmp/claude-scratch-*` |
+| *(osascript)* | Notification | `permission_prompt\|idle_prompt` | Desktop alert when Claude needs input (macOS) |
 | `cbm-session-reminder.sh` | SessionStart | `startup\|resume\|clear\|compact` | Re-inject the code-discovery protocol |
 
 Audit logs land in `.claude/logs/` (gitignored). Override the log dir with
 `CLAUDE_HOOK_LOGDIR` (used by the self-checks so they write to a tempdir).
 
-## Not auto-registered (need your approval)
+## Not auto-registered (needs your approval)
 
-Two hooks change the agent's own permission surface, so they are left for you
-to add to a settings file directly (the auto-mode classifier blocks the agent
-from self-applying them).
-
-**`auto-approve.sh` — PermissionRequest (issue #18).** Auto-approves only
-`ExitPlanMode`. Add to `.claude/settings.json` under `"hooks"`:
+`auto-approve.sh` (issue #18) changes the agent's own permission surface, so
+it's left for you to add directly — the auto-mode classifier blocks the agent
+from self-applying it. It auto-approves only `ExitPlanMode`. Add to
+`.claude/settings.json` under `"hooks"`:
 
 ```json
 "PermissionRequest": [
@@ -48,20 +47,9 @@ from self-applying them).
 ]
 ```
 
-**Desktop notification (issue #13).** Machine-local, so it belongs in
-`~/.claude/settings.json`, not this repo:
-
-```json
-"Notification": [
-  {
-    "matcher": "permission_prompt|idle_prompt",
-    "hooks": [
-      { "type": "command", "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'" }
-    ]
-  }
-]
-```
-Linux: `notify-send 'Claude Code' '...'`. Windows: PowerShell `MessageBox`.
+The `Notification` hook (issue #13) is registered here with macOS `osascript`.
+On Linux swap the command for `notify-send 'Claude Code' 'Claude Code needs
+your attention'`; on Windows use a PowerShell `MessageBox`.
 
 ## Testing
 
