@@ -76,7 +76,7 @@
           },
           {
             "type": "prompt",
-            "prompt": "Check if all requested tasks are complete. If not, respond with {\"ok\": false, \"reason\": \"what remains to be done\"}."
+            "prompt": "Check whether any requested work remains that the assistant can still act on right now. If so, respond with {\"ok\": false, \"reason\": \"what remains\"}. Work explicitly deferred to the user, blocked pending user approval, or intentionally left for manual completion counts as done for this check."
           }
         ]
       }
