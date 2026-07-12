@@ -29,27 +29,15 @@ supports a `--selfcheck` mode; `test-hooks.sh` runs them all and is called by
 Audit logs land in `.claude/logs/` (gitignored). Override the log dir with
 `CLAUDE_HOOK_LOGDIR` (used by the self-checks so they write to a tempdir).
 
-## Not auto-registered (needs your approval)
+## Notification portability
 
-`auto-approve.sh` (issue #18) changes the agent's own permission surface, so
-it's left for you to add directly — the auto-mode classifier blocks the agent
-from self-applying it. It auto-approves only `ExitPlanMode`. Add to
-`.claude/settings.json` under `"hooks"`:
+The `Notification` hook (issue #13) is registered with macOS `osascript`. On
+Linux swap the command for `notify-send 'Claude Code' 'Claude Code needs your
+attention'`; on Windows use a PowerShell `MessageBox`.
 
-```json
-"PermissionRequest": [
-  {
-    "matcher": "ExitPlanMode",
-    "hooks": [
-      { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/auto-approve.sh" }
-    ]
-  }
-]
-```
-
-The `Notification` hook (issue #13) is registered here with macOS `osascript`.
-On Linux swap the command for `notify-send 'Claude Code' 'Claude Code needs
-your attention'`; on Windows use a PowerShell `MessageBox`.
+> A `PermissionRequest` auto-approve hook was considered (issue #18) and
+> dropped: auto-approving `ExitPlanMode` removes the human plan-review gate,
+> which contradicts the human-in-the-loop intent of this repo.
 
 ## Testing
 
